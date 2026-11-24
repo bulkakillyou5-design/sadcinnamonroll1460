@@ -22,6 +22,11 @@ jobs:
       - run: npm test
       - run: npm run mcp:check
       - run: npm run build
+      - name: Prepare standalone Collection download
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          npm run export:html -- collection
+          cp dist-html/collection/index.html dist/downloads/collection.html
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
